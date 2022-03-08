@@ -6,7 +6,7 @@ const db = connectDb();
 
 for (let i = 0; i < jobsData.length; i++) {
   db.collection("jobs")
-    .add({...jobsData[i], timestamp: FieldValue.serverTimestamp()})
+    .add({...jobsData[i], createdOn: FieldValue.serverTimestamp()})
     .then((doc) => {
         console.log(`Job added: ${doc.id}`)
     })

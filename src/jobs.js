@@ -10,7 +10,7 @@ exports.getJobs = (req, res) => {
         job.id = doc.id;
         return job;
       });
-      res.status(200).send(jobList);
+      res.send(jobList);
     })
     .catch((err) => res.status(500).send(err));
 };
@@ -42,7 +42,24 @@ exports.getFilteredJobs = (req, res) => {
         .filter((r) =>
           r.experienceLevel.includes(...jobsQuery.experienceLevel)
         );
-      res.status(200).send(filteredResults);
+      res.send(filteredResults);
+    })
+    .catch((err) => res.status(500).send(err));
+};
+
+exports.getRecentJobs = (req, res) => {
+  const db = connectDb();
+  db.collection("jobs")
+    .orderBy("timestamp")
+    .limit(4)
+    .get()
+    .then((snapshot) => {
+      const results = snapshot.docs.map((doc) => {
+        let job = doc.data();
+        job.id = doc.id;
+        return job;
+      });
+      res.send(results);
     })
     .catch((err) => res.status(500).send(err));
 };
