@@ -17,11 +17,11 @@ exports.getJobs = (req, res) => {
 
 exports.getFilteredJobs = (req, res) => {
   const jobsQuery = {
-    technologiesUsed: req.body.technologiesUsed,
+    technologies: req.body.technologies,
     salaryLowerLim: req.body.salaryLowerLim,
-    jobTitle: req.body.jobTitle,
+    position: req.body.position,
     location: req.body.location,
-    experienceLevel: req.body.experienceLevel,
+    experience: req.body.experience,
   };
   const db = connectDb();
   db.collection("jobs")
@@ -37,10 +37,10 @@ exports.getFilteredJobs = (req, res) => {
         .filter((r) =>
           r.technologiesUsed.includes(...jobsQuery.technologiesUsed)
         )
-        .filter((r) => r.jobTitle.includes(...jobsQuery.jobTitle))
+        .filter((r) => r.jobTitle.includes(...jobsQuery.position))
         .filter((r) => r.location.includes(...jobsQuery.location))
         .filter((r) =>
-          r.experienceLevel.includes(...jobsQuery.experienceLevel)
+          r.experienceLevel.includes(...jobsQuery.experience)
         );
       res.send(filteredResults);
     })
@@ -50,7 +50,7 @@ exports.getFilteredJobs = (req, res) => {
 exports.getRecentJobs = (req, res) => {
   const db = connectDb();
   db.collection("jobs")
-    .orderBy("timestamp")
+    .orderBy("createdOn")
     .limit(4)
     .get()
     .then((snapshot) => {
