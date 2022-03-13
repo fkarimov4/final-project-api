@@ -35,12 +35,12 @@ exports.getFilteredJobs = (req, res) => {
       const filteredResults = results
         .filter((r) => r.salaryLowerLim >= jobsQuery.salaryLowerLim)
         .filter((r) =>
-          r.technologiesUsed.includes(...jobsQuery.technologiesUsed)
+          r.technologies.includes(...jobsQuery.technologies)
         )
-        .filter((r) => r.jobTitle.includes(...jobsQuery.position))
+        .filter((r) => r.position.includes(...jobsQuery.position))
         .filter((r) => r.location.includes(...jobsQuery.location))
         .filter((r) =>
-          r.experienceLevel.includes(...jobsQuery.experience)
+          r.experience.includes(...jobsQuery.experience)
         );
       res.send(filteredResults);
     })
@@ -51,7 +51,7 @@ exports.getRecentJobs = (req, res) => {
   const db = connectDb();
   db.collection("jobs")
     .orderBy("createdOn")
-    .limit(4)
+    .limit(6)
     .get()
     .then((snapshot) => {
       const results = snapshot.docs.map((doc) => {
