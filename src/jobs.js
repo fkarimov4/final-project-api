@@ -33,11 +33,11 @@ exports.getFilteredJobs = (req, res) => {
         return job;
       });
       const filteredResults = results
-        .filter((r) => r.salaryLowerLim >= jobsQuery.salaryLowerLim)
-        .filter((r) => r.technologies.includes(...jobsQuery.technologies))
-        .filter((r) => r.position.includes(...jobsQuery.position))
         .filter((r) => r.location.includes(...jobsQuery.location))
-        .filter((r) => r.experience.includes(...jobsQuery.experience));
+        .filter((r) => r.position.includes(...jobsQuery.position))
+        .filter((r) => r.experience.includes(...jobsQuery.experience))
+        .filter((r) => r.technologies.includes(...jobsQuery.technologies))
+        .filter((r) => r.salaryLowerLim >= jobsQuery.salaryLowerLim);
       res.send(filteredResults);
     })
     .catch((err) => res.status(500).send(err));
@@ -65,9 +65,9 @@ exports.getSingleJob = (req, res) => {
   db.collection("jobs")
     .doc(req.params.jobId)
     .get()
-    .then(doc => {
-      let job = doc.data()
-      res.send(job)
+    .then((doc) => {
+      let job = doc.data();
+      res.send(job);
     })
     .catch((err) => res.status(500).send(err));
 };
