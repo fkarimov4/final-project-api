@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { getJobs, getFilteredJobs, getRecentJobs, getSingleJob } = require("./jobs");
-const { addUser } = require("./users");
+const { addUser, updateUser, getUser } = require("./users");
 
 const port = process.env.PORT || 3000;
 
@@ -16,6 +16,8 @@ app.get("/jobs/recent", getRecentJobs);
 app.get("/jobs/:jobId", getSingleJob);
 
 app.post("/users/add", addUser)
+app.get("/users/:userId", getUser)
+app.patch("/users/:userId", updateUser)
 
 app.listen(port, () => {
   console.log(`Listening on ${port}`);

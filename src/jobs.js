@@ -66,7 +66,8 @@ exports.getSingleJob = (req, res) => {
     .doc(req.params.jobId)
     .get()
     .then((doc) => {
-      let job = doc.data();
+      const job = doc.data();
+      job.id = doc.id;
       res.send(job);
     })
     .catch((err) => res.status(500).send(err));
